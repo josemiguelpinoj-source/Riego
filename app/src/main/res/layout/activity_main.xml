@@ -123,18 +123,34 @@
             app:layout_constraintStart_toEndOf="@+id/btnIngresar"
             app:layout_constraintTop_toBottomOf="@+id/chkRecordarme" />
 
+        <!-- Botón para ir a la pantalla de crear nuevo usuario -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnIrARegistro"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/register_link_to_register"
+            android:textColor="@color/green_primary_dark"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnIngresar" />
+
         <LinearLayout
             android:id="@+id/layoutDivider"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnIngresar">
+            app:layout_constraintTop_toBottomOf="@+id/btnIrARegistro">
 
             <View
                 android:layout_width="0dp"
