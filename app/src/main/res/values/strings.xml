@@ -75,4 +75,25 @@
     <string name="pref_language_label">Idioma de la aplicación</string>
     <string name="btn_save_preferences">Guardar Preferencias</string>
     <string name="pref_saved_message">Preferencias guardadas exitosamente</string>
+
+    <!-- Pantalla de Registro (RegistroActivity) -->
+    <string name="register_title">Crear Cuenta</string>
+    <string name="register_subtitle">Regístrate para monitorear tu sistema de riego</string>
+    <string name="register_name_hint">Nombre completo</string>
+    <string name="register_email_hint">Correo electrónico</string>
+    <string name="register_password_hint">Contraseña (mínimo 6 caracteres)</string>
+    <string name="register_confirm_password_hint">Confirmar contraseña</string>
+    <string name="register_button_submit">Registrarse</string>
+    <string name="register_button_back">Ya tengo cuenta / Volver al Login</string>
+    <string name="register_link_to_register">¿No tienes cuenta? Regístrate aquí</string>
+    <string name="register_error_empty_name">Ingresa tu nombre completo</string>
+    <string name="register_error_empty_email">Ingresa tu correo electrónico</string>
+    <string name="register_error_invalid_email">Ingresa un correo electrónico con dominio válido (ej: usuario@correo.com)</string>
+    <string name="register_error_short_password">La contraseña debe tener al menos 6 caracteres</string>
+    <string name="register_error_password_mismatch">Las contraseñas no coinciden</string>
+    <string name="register_error_already_exists">Este correo electrónico ya está registrado</string>
+    <string name="register_success">¡Cuenta creada exitosamente!</string>
+    <string name="login_error_user_not_found">Este correo no está registrado. Crea tu cuenta primero.</string>
+    <string name="login_error_wrong_password">Contraseña incorrecta. Inténtalo nuevamente.</string>
+    <string name="login_success">Inicio de sesión exitoso</string>
 </resources>

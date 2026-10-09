@@ -73,6 +73,9 @@ class MainActivity : AppCompatActivity() {
         // Cargar usuario guardado si la opción 'Recordarme' estaba activa previamente
         cargarPreferenciasUsuario()
 
+        // Asegurar que exista al menos un usuario demo inicial si la base de datos está vacía
+        inicializarUsuarioDemo()
+
         // Configuración de listeners de clics
         binding.btnIngresar.setOnClickListener {
             procesarIngreso()
@@ -82,8 +85,19 @@ class MainActivity : AppCompatActivity() {
             limpiarCampos()
         }
 
+        binding.btnIrARegistro.setOnClickListener {
+            val intent = Intent(this, RegistroActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.btnGoogleSignIn.setOnClickListener {
             iniciarSesionGoogle()
+        }
+    }
+
+    private fun inicializarUsuarioDemo() {
+        if (!RegistroActivity.estaRegistrado(this, "admin@riego.cl")) {
+            RegistroActivity.registrarUsuario(this, "Administrador Riego", "admin@riego.cl", "123456")
         }
     }
 
@@ -210,27 +224,51 @@ class MainActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-        } else {
-            // Reiniciar contador de intentos fallidos
-            intentosFallidos = 0
-
-            // Guardar o eliminar el usuario de SharedPreferences según el checkbox
-            val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            prefs.edit().apply {
-                putBoolean(KEY_RECORDAR, recordarme)
-                if (recordarme) {
-                    putString(KEY_USUARIO, usuario)
-                } else {
-                    remove(KEY_USUARIO)
-                }
-                apply()
-            }
-
-            // Iniciar BienvenidaActivity pasando el usuario como extra
-            val intent = Intent(this, BienvenidaActivity::class.java)
-            intent.putExtra("usuario", usuario)
-            startActivity(intent)
+            return
         }
+
+        // Validar si el usuario está registrado en el sistema
+        if (!RegistroActivity.estaRegistrado(this, usuario)) {
+            intentosFallidos++
+            binding.tilUsuario.error = getString(R.string.login_error_user_not_found)
+            Toast.makeText(this, getString(R.string.login_error_user_not_found), Toast.LENGTH_LONG).show()
+            return
+        }
+
+        // Validar que la contraseña coincida con la registrada
+        if (!RegistroActivity.validarCredenciales(this, usuario, password)) {
+            intentosFallidos++
+            binding.tilPassword.error = getString(R.string.login_error_wrong_password)
+            val restantes = maxIntentos - intentosFallidos
+            if (intentosFallidos >= maxIntentos) {
+                Toast.makeText(this, getString(R.string.login_error_locked), Toast.LENGTH_LONG).show()
+                binding.btnIngresar.isEnabled = false
+            } else {
+                Toast.makeText(this, getString(R.string.login_error_wrong_password), Toast.LENGTH_LONG).show()
+            }
+            return
+        }
+
+        // Inicio de sesión exitoso
+        intentosFallidos = 0
+        Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT).show()
+
+        // Guardar o eliminar el usuario de SharedPreferences según el checkbox
+        val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        prefs.edit().apply {
+            putBoolean(KEY_RECORDAR, recordarme)
+            if (recordarme) {
+                putString(KEY_USUARIO, usuario)
+            } else {
+                remove(KEY_USUARIO)
+            }
+            apply()
+        }
+
+        // Iniciar BienvenidaActivity pasando el usuario como extra
+        val intent = Intent(this, BienvenidaActivity::class.java)
+        intent.putExtra("usuario", usuario)
+        startActivity(intent)
     }
 
     /**
